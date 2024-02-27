@@ -14,6 +14,7 @@ class Injection {
         
         let container = Container()
         
+        // MARK: - Services
         container.register(IDateManager.self) { _ in
             return DateManager()
         }
@@ -26,16 +27,17 @@ class Injection {
         container.register(IDataStorageManager.self) { _ in
             return DataStorageManager()
         }
-        container.register(ITodayWeatherListViewModel.self) { resolver in
+        container.register(IScreenFactory.self) { _ in
+            return ScreenFactory()
+        }
+        // MARK: - ViewModels
+        container.register(TodayWeatherListViewModel.self) { resolver in
             let viewModel = TodayWeatherListViewModel(locationManager: resolver.resolve(ILocationManager.self)!, weatherService: resolver.resolve(IWeatherManager.self)!, dateManager: resolver.resolve(IDateManager.self)!, dataStorageManager: resolver.resolve(IDataStorageManager.self)!)
             return viewModel
         }
-        container.register(SavedCitiesListViewModel.self) { resolver in
+        container.register(ISavedCitiesListViewModel.self) { resolver in
             let viewModel = SavedCitiesListViewModel(dataStorageManager: resolver.resolve(IDataStorageManager.self)!)
             return viewModel
-        }
-        container.register(IScreenFactory.self) { _ in
-            return ScreenFactory()
         }
         return container
     }
