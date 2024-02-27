@@ -88,9 +88,8 @@ class TodayWeatherListTableViewController: UITableViewController {
     }
     
     @objc private func openCitiesList() {
-        let container = Injection.makeContainer()
-        guard let dependency = container.resolve(SavedCitiesListViewModel.self) else {return}
-        let vc = SavedCitiesListTableViewController(viewModel: dependency)
+        let factory = ScreenFactory()
+        guard let vc = factory.createScreen(screen: .cities) as? SavedCitiesListTableViewController else {return}
         vc.delegate = self
         self.navigationController?.pushViewController(vc, animated: true)
     }
